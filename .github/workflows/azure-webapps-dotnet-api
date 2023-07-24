@@ -20,8 +20,7 @@
 name: Build and deploy ASP.Net Core app to an Azure Web App
 
 env:
-  AZURE_WEBAPP_NAME: eshopxeniya-we    # set this to the name of your Azure Web App
-  AZURE_SLOT_NAME: staging            #set this to slot name
+  AZURE_WEBAPP_NAME: eshop-publicapi    # set this to the name of your Azure Web App
   AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '7.0'                 # set this to the .NET Core version to use
 
@@ -57,7 +56,7 @@ jobs:
         run: dotnet build --configuration Release ./eShopOnWeb.sln
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}} ./src/Web/Web.csproj
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}} ./src/PublicApi/PublicApi.csproj
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
@@ -85,6 +84,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          slot-name: ${{ env.AZURE_SLOT_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_STAGING }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_API_PUBLISH_PROFILE }}
           package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
