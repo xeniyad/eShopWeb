@@ -94,6 +94,18 @@ builder.Services.AddBlazorServices();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+const string CORS_POLICY = "CorsPolicy";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: CORS_POLICY,
+        corsPolicyBuilder =>
+        {
+            corsPolicyBuilder.WithOrigins(baseUrlConfig!.ApiBase.TrimEnd('/'));
+            corsPolicyBuilder.AllowAnyMethod();
+            corsPolicyBuilder.AllowAnyHeader();
+        });
+});
+
 var app = builder.Build();
 
 app.Logger.LogInformation("App created...");
